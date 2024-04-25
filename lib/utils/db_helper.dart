@@ -62,7 +62,7 @@ create table traveltb (
     return id;
   }
 
-  //method บันทึกข้อมูล User จากหน้า RegisterUI
+  //method บันทึกข้อมูล Travel จากหน้า RegisterUI
   static Future<int> insertTravel(Travel travel) async{
     final db = await DBHelper.db();
 
@@ -91,5 +91,20 @@ create table traveltb (
     } else {
       return null;
     }
+  }
+
+  //method ดึงข้อมูลทั้งหมดจาก traveltb
+  static Future<List<Travel>> getAllTravel() async{
+    //ติดต่อฐานข้อมูล
+    final db = await DBHelper.db();
+
+    //ดึงข้อมูลเก็บในตัวแปร
+    final result = await db.query(
+      'traveltb',
+      orderBy: 'id DESC',
+    );
+
+    //ส่งข้อมูลที่ดึงมาไปใช้งาน
+    return result.map((data) => Travel.fromMap(data)).toList();
   }
 }
